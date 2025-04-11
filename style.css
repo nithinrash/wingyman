@@ -96,6 +96,8 @@ header a {
     box-sizing: border-box;
     color: #fff;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    /* Add padding bottom to prevent overlap with thumbnails */
+    padding-bottom: 220px;
 }
 
 .carousel .list .item .author {
@@ -188,6 +190,7 @@ header a {
     color: #fff;
 }
 
+/* Thumbnail section - updated for better responsiveness */
 .thumbnail {
     position: absolute;
     bottom: 50px;
@@ -543,15 +546,76 @@ header a {
     }
 }
 
-/* responsive styles */
+/* responsive styles - updated for better thumbnail positioning */
+@media screen and (max-width: 1360px) {
+    .carousel .list .item .content {
+        padding-bottom: 200px; /* Added space for thumbnails */
+    }
+    
+    .thumbnail {
+        bottom: 70px; /* Adjusted position to avoid overlapping content */
+    }
+    
+    .thumbnail .item {
+        width: 150px;
+        height: 190px;
+    }
+    
+    .arrows {
+        bottom: 180px; /* Adjusted arrow position */
+    }
+    
+    .carousel.next .list .item:nth-child(1) img {
+        width: 150px;
+        height: 190px;
+    }
+    
+    @-webkit-keyframes outFrame {
+        to {
+            width: 150px;
+            height: 190px;
+            bottom: 70px;
+            left: 50%;
+            border-radius: 20px;
+        }
+    }
+    
+    @keyframes outFrame {
+        to {
+            width: 150px;
+            height: 190px;
+            bottom: 70px;
+            left: 50%;
+            border-radius: 20px;
+        }
+    }
+}
+
 @media screen and (max-width: 1024px) {
     .carousel .list .item .content .title,
     .carousel .list .item .content .topic {
         font-size: 3.5em;
     }
+    
+    .carousel .list .item .content {
+        padding-bottom: 180px; /* Create space for thumbnails */
+    }
+    
+    .thumbnail {
+        bottom: 60px;
+    }
+    
+    .thumbnail .item {
+        width: 140px;
+        height: 170px;
+    }
+    
+    .arrows {
+        bottom: 170px;
+    }
 }
 
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 768px) {
     header {
         max-width: 95%;
     }
@@ -567,6 +631,7 @@ header a {
         transform: translateY(-50%); /* Center content vertically */
         max-width: 95%;
         padding-top: 30px;
+        padding-bottom: 160px; /* Updated space for thumbnails */
     }
 
     .carousel .list .item .content .title {
@@ -591,7 +656,7 @@ header a {
     }
 
     .thumbnail {
-        bottom: 30px;
+        bottom: 40px;
         gap: 10px;
     }
 
@@ -601,7 +666,7 @@ header a {
     }
 
     .arrows {
-        bottom: 90px;
+        bottom: 120px;
         width: 85%;
     }
 
@@ -619,7 +684,7 @@ header a {
         to {
             width: 110px;
             height: 160px;
-            bottom: 30px;
+            bottom: 40px;
             left: 50%;
             border-radius: 20px;
         }
@@ -629,7 +694,7 @@ header a {
         to {
             width: 110px;
             height: 160px;
-            bottom: 30px;
+            bottom: 40px;
             left: 50%;
             border-radius: 20px;
         }
@@ -651,6 +716,7 @@ header a {
         top: 50%; /* Perfect vertical centering for medium phones */
         transform: translateY(-50%); /* Ensure proper vertical centering */
         padding-top: 20px;
+        padding-bottom: 140px; /* Updated space for thumbnails */
     }
 
     .carousel .list .item .content .title {
@@ -666,13 +732,18 @@ header a {
         margin-top: 15px;
     }
 
+    .thumbnail {
+        bottom: 35px;
+        gap: 8px;
+    }
+
     .thumbnail .item {
         width: 80px;
         height: 120px;
     }
 
     .arrows {
-        bottom: 180px;
+        bottom: 110px;
     }
 
     .carousel.next .list .item:nth-child(1) img {
@@ -684,7 +755,7 @@ header a {
         to {
             width: 80px;
             height: 120px;
-            bottom: 30px;
+            bottom: 35px;
             left: 50%;
             border-radius: 15px;
         }
@@ -694,7 +765,7 @@ header a {
         to {
             width: 80px;
             height: 120px;
-            bottom: 30px;
+            bottom: 35px;
             left: 50%;
             border-radius: 15px;
         }
@@ -725,6 +796,7 @@ header a {
         top: 50%; /* Perfect vertical centering for small phones */
         transform: translateY(-50%); /* Vertical centering */
         padding-top: 10px;
+        padding-bottom: 120px; /* Updated space for thumbnails */
     }
 
     .carousel .list .item .content .title {
@@ -758,7 +830,7 @@ header a {
     }
 
     .arrows {
-        bottom: 140px; /* Adjusted position */
+        bottom: 95px; /* Adjusted position */
         width: 90%;
     }
 
@@ -811,6 +883,7 @@ header a {
     .carousel .list .item .content {
         top: 50%; /* Perfect vertical centering for landscape mode */
         transform: translateY(-50%);
+        padding-bottom: 100px; /* Less space needed in landscape */
     }
 
     .carousel .list .item .content .title,
@@ -827,12 +900,42 @@ header a {
     .thumbnail {
         bottom: 20px;
     }
+    
+    .thumbnail .item {
+        width: 50px;
+        height: 75px;
+    }
 
     .arrows {
-        bottom: 100px;
+        bottom: 80px;
     }
 
     .carousel .list .item .buttons {
         margin-top: 10px;
+    }
+    
+    .carousel.next .list .item:nth-child(1) img {
+        width: 50px;
+        height: 75px;
+    }
+    
+    @-webkit-keyframes outFrame {
+        to {
+            width: 50px;
+            height: 75px;
+            bottom: 20px;
+            left: 50%;
+            border-radius: 10px;
+        }
+    }
+    
+    @keyframes outFrame {
+        to {
+            width: 50px;
+            height: 75px;
+            bottom: 20px;
+            left: 50%;
+            border-radius: 10px;
+        }
     }
 }
