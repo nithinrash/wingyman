@@ -75,7 +75,9 @@ header a {
     transition: filter 0.8s ease, -webkit-filter 0.8s ease;
     -webkit-transform: translateZ(0); /* Hardware acceleration for Safari */
     transform: translateZ(0);
-    will-change: filter; /* Performance hint */
+    will-change: filter, transform; /* Performance hint */
+    backface-visibility: hidden; /* Prevent flickering in Safari */
+    -webkit-backface-visibility: hidden;
 }
 
 .carousel .list .item:nth-child(1) img {
@@ -96,8 +98,6 @@ header a {
     box-sizing: border-box;
     color: #fff;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    /* Add padding bottom to prevent overlap with thumbnails */
-    padding-bottom: 220px;
 }
 
 .carousel .list .item .author {
@@ -190,7 +190,6 @@ header a {
     color: #fff;
 }
 
-/* Thumbnail section - updated for better responsiveness */
 .thumbnail {
     position: absolute;
     bottom: 50px;
@@ -223,6 +222,9 @@ header a {
     -ms-flex-negative: 0;
     flex-shrink: 0;
     position: relative;
+    -webkit-transform: translateZ(0); /* Hardware acceleration for Safari */
+    transform: translateZ(0);
+    will-change: transform; /* Performance hint */
 }
 
 .thumbnail .item img {
@@ -239,6 +241,8 @@ header a {
     transition: filter 0.3s ease, -webkit-filter 0.3s ease;
     -webkit-transform: translateZ(0); /* Hardware acceleration for Safari */
     transform: translateZ(0);
+    backface-visibility: hidden; /* Prevent flickering in Safari */
+    -webkit-backface-visibility: hidden;
 }
 
 .thumbnail .item:hover img,
@@ -336,6 +340,11 @@ header a {
     opacity: 0;
     -webkit-animation: showContent .5s 1s linear 1 forwards;
     animation: showContent .5s 1s linear 1 forwards;
+    will-change: transform, opacity, filter; /* Performance hint */
+    -webkit-transform: translateZ(0); /* Hardware acceleration for Safari */
+    transform: translateZ(0);
+    backface-visibility: hidden; /* Prevent flickering in Safari */
+    -webkit-backface-visibility: hidden;
 }
 
 @-webkit-keyframes showContent {
@@ -377,6 +386,11 @@ header a {
     filter: blur(0);
     -webkit-transform: translateZ(0); /* Hardware acceleration for Safari */
     transform: translateZ(0);
+    will-change: width, height, bottom, left, border-radius; /* Safari performance */
+    backface-visibility: hidden; /* Prevent flickering in Safari */
+    -webkit-backface-visibility: hidden;
+    -webkit-perspective: 1000; /* Additional Safari performance boost */
+    perspective: 1000;
 }
 
 @-webkit-keyframes showImage {
@@ -403,6 +417,8 @@ header a {
     overflow: hidden;
     -webkit-animation: showThumbnail .5s linear 1 forwards;
     animation: showThumbnail .5s linear 1 forwards;
+    -webkit-transform: translate3d(0,0,0); /* Force GPU rendering in Safari */
+    transform: translate3d(0,0,0);
 }
 
 @-webkit-keyframes showThumbnail {
@@ -422,19 +438,22 @@ header a {
 .carousel.next .thumbnail {
     -webkit-animation: effectNext .5s linear 1 forwards;
     animation: effectNext .5s linear 1 forwards;
+    -webkit-transform: translate3d(150px,0,0); /* Initial state with GPU acceleration */
+    transform: translate3d(150px,0,0);
+    will-change: transform; /* Performance hint */
 }
 
 @-webkit-keyframes effectNext {
-    from {
-        -webkit-transform: translateX(150px);
-        transform: translateX(150px);
+    to {
+        -webkit-transform: translate3d(-50%,0,0);
+        transform: translate3d(-50%,0,0);
     }
 }
 
 @keyframes effectNext {
-    from {
-        -webkit-transform: translateX(150px);
-        transform: translateX(150px);
+    to {
+        -webkit-transform: translate3d(-50%,0,0);
+        transform: translate3d(-50%,0,0);
     }
 }
 
@@ -483,6 +502,11 @@ header a {
     filter: blur(0);
     -webkit-transform: translateZ(0); /* Hardware acceleration for Safari */
     transform: translateZ(0);
+    will-change: width, height, bottom, left, border-radius; /* Safari performance */
+    backface-visibility: hidden; /* Prevent flickering in Safari */
+    -webkit-backface-visibility: hidden;
+    -webkit-perspective: 1000; /* Additional Safari performance boost */
+    perspective: 1000;
 }
 
 @-webkit-keyframes outFrame {
@@ -510,6 +534,8 @@ header a {
     opacity: 0;
     -webkit-animation: showThumbnail .5s linear 1 forwards;
     animation: showThumbnail .5s linear 1 forwards;
+    -webkit-transform: translate3d(0,0,0); /* Force GPU rendering in Safari */
+    transform: translate3d(0,0,0);
 }
 
 .carousel.next .arrows button,
@@ -524,6 +550,9 @@ header a {
 .carousel.prev .list .item:nth-child(2) .content .buttons {
     -webkit-animation: contentOut 1.5s linear 1 forwards !important;
     animation: contentOut 1.5s linear 1 forwards !important;
+    will-change: transform, opacity, filter; /* Performance hint */
+    -webkit-transform: translateZ(0); /* Hardware acceleration for Safari */
+    transform: translateZ(0);
 }
 
 @-webkit-keyframes contentOut {
@@ -546,34 +575,50 @@ header a {
     }
 }
 
-/* responsive styles - updated for better thumbnail positioning */
-@media screen and (max-width: 1360px) {
+/* responsive styles */
+@media screen and (max-width: 1024px) {
+    .carousel .list .item .content .title,
+    .carousel .list .item .content .topic {
+        font-size: 3.5em;
+    }
+}
+
+/* Specific fix for 1360x768 resolution */
+@media screen and (min-width: 1300px) and (max-width: 1400px) and (max-height: 800px) {
     .carousel .list .item .content {
-        padding-bottom: 200px; /* Added space for thumbnails */
+        top: 45%;
+        padding-top: 40px; /* Add space at the top */
+    }
+    
+    .carousel .list .item .content .title,
+    .carousel .list .item .content .topic {
+        font-size: 3.2em; /* Slightly reduce title size */
     }
     
     .thumbnail {
-        bottom: 70px; /* Adjusted position to avoid overlapping content */
+        bottom: 70px; /* Move thumbnails higher */
+        gap: 12px; /* Reduced gap between thumbnails */
     }
     
     .thumbnail .item {
-        width: 150px;
-        height: 190px;
+        width: 120px; /* Smaller thumbnails as requested */
+        height: 160px;
     }
     
     .arrows {
-        bottom: 180px; /* Adjusted arrow position */
+        bottom: 190px; /* Move arrows above thumbnails */
     }
     
+    /* Fix animation frames for this resolution */
     .carousel.next .list .item:nth-child(1) img {
-        width: 150px;
-        height: 190px;
+        width: 120px;
+        height: 160px;
     }
     
     @-webkit-keyframes outFrame {
         to {
-            width: 150px;
-            height: 190px;
+            width: 120px;
+            height: 160px;
             bottom: 70px;
             left: 50%;
             border-radius: 20px;
@@ -582,36 +627,12 @@ header a {
     
     @keyframes outFrame {
         to {
-            width: 150px;
-            height: 190px;
+            width: 120px;
+            height: 160px;
             bottom: 70px;
             left: 50%;
             border-radius: 20px;
         }
-    }
-}
-
-@media screen and (max-width: 1024px) {
-    .carousel .list .item .content .title,
-    .carousel .list .item .content .topic {
-        font-size: 3.5em;
-    }
-    
-    .carousel .list .item .content {
-        padding-bottom: 180px; /* Create space for thumbnails */
-    }
-    
-    .thumbnail {
-        bottom: 60px;
-    }
-    
-    .thumbnail .item {
-        width: 140px;
-        height: 170px;
-    }
-    
-    .arrows {
-        bottom: 170px;
     }
 }
 
@@ -631,7 +652,6 @@ header a {
         transform: translateY(-50%); /* Center content vertically */
         max-width: 95%;
         padding-top: 30px;
-        padding-bottom: 160px; /* Updated space for thumbnails */
     }
 
     .carousel .list .item .content .title {
@@ -656,7 +676,7 @@ header a {
     }
 
     .thumbnail {
-        bottom: 40px;
+        bottom: 30px;
         gap: 10px;
     }
 
@@ -666,7 +686,7 @@ header a {
     }
 
     .arrows {
-        bottom: 120px;
+        bottom: 90px;
         width: 85%;
     }
 
@@ -684,7 +704,7 @@ header a {
         to {
             width: 110px;
             height: 160px;
-            bottom: 40px;
+            bottom: 30px;
             left: 50%;
             border-radius: 20px;
         }
@@ -694,7 +714,7 @@ header a {
         to {
             width: 110px;
             height: 160px;
-            bottom: 40px;
+            bottom: 30px;
             left: 50%;
             border-radius: 20px;
         }
@@ -716,7 +736,6 @@ header a {
         top: 50%; /* Perfect vertical centering for medium phones */
         transform: translateY(-50%); /* Ensure proper vertical centering */
         padding-top: 20px;
-        padding-bottom: 140px; /* Updated space for thumbnails */
     }
 
     .carousel .list .item .content .title {
@@ -732,18 +751,13 @@ header a {
         margin-top: 15px;
     }
 
-    .thumbnail {
-        bottom: 35px;
-        gap: 8px;
-    }
-
     .thumbnail .item {
         width: 80px;
         height: 120px;
     }
 
     .arrows {
-        bottom: 110px;
+        bottom: 180px;
     }
 
     .carousel.next .list .item:nth-child(1) img {
@@ -755,7 +769,7 @@ header a {
         to {
             width: 80px;
             height: 120px;
-            bottom: 35px;
+            bottom: 30px;
             left: 50%;
             border-radius: 15px;
         }
@@ -765,7 +779,7 @@ header a {
         to {
             width: 80px;
             height: 120px;
-            bottom: 35px;
+            bottom: 30px;
             left: 50%;
             border-radius: 15px;
         }
@@ -796,7 +810,6 @@ header a {
         top: 50%; /* Perfect vertical centering for small phones */
         transform: translateY(-50%); /* Vertical centering */
         padding-top: 10px;
-        padding-bottom: 120px; /* Updated space for thumbnails */
     }
 
     .carousel .list .item .content .title {
@@ -830,7 +843,7 @@ header a {
     }
 
     .arrows {
-        bottom: 95px; /* Adjusted position */
+        bottom: 140px; /* Adjusted position */
         width: 90%;
     }
 
@@ -883,7 +896,6 @@ header a {
     .carousel .list .item .content {
         top: 50%; /* Perfect vertical centering for landscape mode */
         transform: translateY(-50%);
-        padding-bottom: 100px; /* Less space needed in landscape */
     }
 
     .carousel .list .item .content .title,
@@ -900,42 +912,12 @@ header a {
     .thumbnail {
         bottom: 20px;
     }
-    
-    .thumbnail .item {
-        width: 50px;
-        height: 75px;
-    }
 
     .arrows {
-        bottom: 80px;
+        bottom: 100px;
     }
 
     .carousel .list .item .buttons {
         margin-top: 10px;
-    }
-    
-    .carousel.next .list .item:nth-child(1) img {
-        width: 50px;
-        height: 75px;
-    }
-    
-    @-webkit-keyframes outFrame {
-        to {
-            width: 50px;
-            height: 75px;
-            bottom: 20px;
-            left: 50%;
-            border-radius: 10px;
-        }
-    }
-    
-    @keyframes outFrame {
-        to {
-            width: 50px;
-            height: 75px;
-            bottom: 20px;
-            left: 50%;
-            border-radius: 10px;
-        }
     }
 }
